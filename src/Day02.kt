@@ -1,5 +1,4 @@
 import kotlin.math.abs
-import kotlin.math.sign
 
 fun main() {
     fun incOrDec(a: Int, b: Int): Int {
