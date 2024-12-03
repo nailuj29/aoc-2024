@@ -14,7 +14,6 @@ fun main() {
     }
 
     fun part2(input: List<String>): Int {
-        val mulRegex = Regex("mul\\((\\d+),(\\d+)\\)")
         val doDontRegex = Regex("don't\\(\\).*?do\\(\\)")
 
         var string = input.joinToString("")
@@ -24,15 +23,7 @@ fun main() {
             string = string.replace(match.groupValues[0], "")
         }
 
-        val matches = mulRegex.findAll(string)
-
-
-        var count = 0
-        for (match in matches) {
-            count += match.groupValues[1].toInt() * match.groupValues[2].toInt()
-        }
-
-        return count
+        return part1(listOf(string))
     }
 
     val testInput = readInput("day3_test")
