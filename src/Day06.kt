@@ -106,9 +106,6 @@ fun main() {
                 }.joinToString("")
             }
 
-//            println(newMap.joinToString("\n"))
-//            println()
-
             if (!canEscape(newMap)) count++
         }
 
