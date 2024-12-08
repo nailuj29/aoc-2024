@@ -1,6 +1,7 @@
 fun main() {
     fun canReachTarget1(target: Long, nums: List<Long>): Boolean {
         if (nums.isEmpty()) { return false }
+        if (nums[0] > target) { return false }
         if (nums.size == 1) {
             return nums[0] == target
         }
@@ -13,6 +14,7 @@ fun main() {
 
     fun canReachTarget2(target: Long, nums: List<Long>): Boolean {
         if (nums.isEmpty()) { return false }
+        if (nums[0] > target) { return false }
         if (nums.size == 1) {
             return nums[0] == target
         }
