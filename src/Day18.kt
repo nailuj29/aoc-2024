@@ -1,13 +1,6 @@
 import kotlin.math.abs
 
 fun main() {
-    val turns = mapOf(
-        -1 to 0 to listOf(0 to 1, 0 to -1),
-        1 to 0 to listOf(0 to 1, 0 to -1),
-        0 to -1 to listOf(1 to 0, -1 to 0),
-        0 to 1 to listOf(1 to 0, -1 to 0),
-    )
-
     fun heuristic(start: Pair<Int, Int>, end: Pair<Int, Int>): Int {
         return abs(end.first - start.first) + abs(end.second - start.second)
     }
