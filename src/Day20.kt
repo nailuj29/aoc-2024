@@ -6,7 +6,7 @@ fun main() {
     }
 
     // definitely not needed here 💀
-    fun astar(grid: List<String>, start: Pair<Int, Int>, end: Pair<Int, Int>): Set<Pair<Int, Int>> {
+    fun astar(grid: List<String>, start: Pair<Int, Int>, end: Pair<Int, Int>): List<Pair<Int, Int>> {
         val openSet = mutableListOf(start)
         val cameFrom = mutableMapOf<Pair<Int, Int>, Pair<Int, Int>>()
 
@@ -17,13 +17,13 @@ fun main() {
             val current = openSet.minBy { fscore[it] ?: 10000000 }
 
             if (current == end) {
-                val path = mutableSetOf(current)
+                val path = mutableListOf(current)
                 var thisNode = current
                 while (thisNode in cameFrom.keys) {
                     thisNode = cameFrom[thisNode]!!
                     path.add(thisNode)
                 }
-                return path
+                return path.reversed()
             }
 
             openSet.remove(current)
@@ -46,7 +46,7 @@ fun main() {
             }
         }
 
-        return emptySet()
+        return emptyList()
     }
 
     fun part1(input: List<String>): Int {
@@ -64,23 +64,21 @@ fun main() {
 
         val fairPath = astar(input, start, end)
 
-        val possibleCheats = mutableSetOf<Pair<Pair<Int, Int>, Pair<Int, Int>>>()
-        for (n1 in fairPath) {
-            inner@for (n2 in fairPath - n1) {
-                if (n1 to n2 in possibleCheats) {
-                    continue@inner
-                }
+        var count = 0
+        for (i in fairPath.indices) {
+            val n1 = fairPath[i]
+            inner@for (j in (i + 1)..<fairPath.size) {
+                val n2 = fairPath[j]
                 if (heuristic(n1, n2) <= 2) {
-                    val saved = astar(input, n1, n2).size - 3
+                    val saved = j - i - heuristic(n1, n2)
                     if (saved >= if (input.size > 100) 100 else 20) {
-                        possibleCheats.add(n1 to n2)
-                        possibleCheats.add(n2 to n1)
+                        count++
                     }
                 }
             }
         }
 
-        return possibleCheats.size / 2
+        return count
     }
 
     fun part2(input: List<String>): Int {
@@ -98,23 +96,21 @@ fun main() {
 
         val fairPath = astar(input, start, end)
 
-        val possibleCheats = mutableSetOf<Pair<Pair<Int, Int>, Pair<Int, Int>>>()
-        for (n1 in fairPath) {
-            inner@for (n2 in fairPath - n1) {
-                if (n1 to n2 in possibleCheats) {
-                    continue@inner
-                }
+        var count = 0
+        for (i in fairPath.indices) {
+            val n1 = fairPath[i]
+            inner@for (j in (i + 1)..<fairPath.size) {
+                val n2 = fairPath[j]
                 if (heuristic(n1, n2) <= 20) {
-                    val saved = astar(input, n1, n2).size - heuristic(n1, n2) - 1 // well that explains why I had to subtract 3 from the size
+                    val saved = j - i - heuristic(n1, n2)
                     if (saved >= if (input.size > 100) 100 else 50) {
-                        possibleCheats.add(n1 to n2)
-                        possibleCheats.add(n2 to n1)
+                        count++
                     }
                 }
             }
         }
 
-        return possibleCheats.size / 2
+        return count
     }
 
     val testInput = readInput("day20_test")
